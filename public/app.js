@@ -1,96 +1,175 @@
 $(function () {
-	var Row = function () {
-		this.MAX_TILES = 4;
+	var POLL_TIMEOUT = 5000;
+	var MAX_ROWS = 5;
+	var MAX_TILES = 4;
+
+	/**
+	 * @constructor
+	 * @param {jQuery.Promise} ready
+	 */
+	var Row = function (ready) {
+		this.ready = ready;
 		this.tiles = [];
-		this.$el = $(document.createElement("div")).addClass("row");
+		this.$el = $('<div>').addClass('row');
 	};
 
-	Row.prototype.addTrack = function (track) {
-		var self = this;
-		var tile = new Tile();
-		var image = tile.$el.find("img");
+	Row.prototype = {
+		/**
+		 * @function
+		 * @param {Object} tweet
+		 */
+		addTile: function (tweet) {
+			var tile = new Tile();
+			this.tiles.push(tile);
 
-		image.attr("src", track.image).load(function () {
-			$(this).fadeIn(500);
-			self.$el.append(tile.$el);
-			self.resize();
-		});
-
-		this.tiles.push(tile);
-	};
-
-	Row.prototype.isFull = function () {
-		return this.tiles.length === this.MAX_TILES;
-	};
-
-	Row.prototype.resize = function () {
-		$.each(this.tiles, function () {
-			this.$el.height(this.$el.width());
-		});
-	};
-
-	var Tile = function () {
-		this.$el = $(document.createElement("div")).addClass("tile");
-		this.$el.append(document.createElement("img"));
-	};
-
-	var App = {
-		POLL_DURATION: 5000,
-
-		MAX_ROWS: 5,
-
-		currentRow: null,
-
-		rows: 0,
-
-		sinceId: 0,
-
-		$el: $(".board"),
-
-		initialise: function () {
-			this.createRow();
-			this.poll();
-			return this;
+			this.ready.then(_.bind(this._renderTile, this, tile, tweet));
 		},
 
-		trimRows: function () {
-			if (this.rows === this.MAX_ROWS && this.currentRow.isFull()) {
-				var row = this.$el.find(".row:eq(0)");
-				row.width(0);
-				this.rows--;
-
-				setTimeout(function () {
-					row.remove();
-				}, 1000);
-			}
-		},
-
-		createRow: function () {
-			this.currentRow = new Row();
-			this.$el.append(this.currentRow.$el);
-			this.rows++;
-		},
-
-		poll: function () {
+		/**
+		 * @function
+		 */
+		_renderTile: function (tile, tweet) {
+			var image = tile.$el.find('img');
 			var self = this;
-			$.getJSON('/tweets?since_id=' + this.sinceId, function (response) {
-				self._renderTracks(response.tweets);
-				self.sinceId = response.since_id;
-				setTimeout(function () { self.poll(); }, self.POLL_DURATION);
+
+			image.attr('src', tweet.spotify.image).load(function () {
+				$(this).fadeIn(500);
+				self.$el.append(tile.$el);
+				self.resize();
 			});
 		},
 
-		_renderTracks: function (tracks) {
-			for (var i = 0; i < tracks.length; i++) {
-				if (!this.currentRow.isFull()) {
-					this.currentRow.addTrack(tracks[i]);
-					this.trimRows();
-				} else {
-					this.createRow();
-					this.currentRow.addTrack(tracks[i]);
-					this.trimRows();
-				}
-			}
+		/**
+		 * @function
+		 * @return {boolean}
+		 */
+		isFull: function () {
+			return this.tiles.length === MAX_TILES;
+		},
+
+		/**
+		 * @function
+		 */
+		resize: function () {
+			_.each(this.tiles, function (tile) {
+				tile.$el.height(tile.$el.width());
+			});
 		}
-	}.initialise();
+	};
+
+	/**
+	 * @constructor
+	 */
+	var Tile = function () {
+		this.$el = $('<div>').addClass('tile');
+		this.$el.append($('<img>'));
+	};
+
+	/**
+	 * @constructor
+	 */
+	var App = function ($container) {
+		this.rows = [];
+		this.sinceId = -1;
+		this.$el = $('<div>').addClass('board');
+
+		$(window).on('resize', _.bind(this._resizeRows, this));
+		this.poll();
+		$container.append(this.$el);
+	};
+
+	App.prototype = {
+		/**
+		 * @function
+		 * @return {jQuery.Promise}
+		 */
+		trimOldRow: function () {
+			var def = $.Deferred();
+
+			if (this.rows.length === MAX_ROWS && _.last(this.rows).isFull()) {
+				var row = this.rows.shift();
+				row.$el.width(0);
+
+				setTimeout(function () {
+					row.$el.remove();
+					def.resolve();
+				}, 1000);
+			} else {
+				// No row to trim, return a resolved promise
+				def.resolve();
+			}
+			return def.promise();
+		},
+
+		/**
+		 * @function
+		 * @return {Row}
+		 */
+		addRow: function () {
+			// Get a 'ready' promise from trimming an old row, the new
+			// row is ready when the animation promise resolves
+			var ready = this.trimOldRow();
+			var row = new Row(ready);
+
+			this.$el.append(row.$el);
+			this.rows.push(row);
+
+			return row;
+		},
+
+		/**
+		 * @function
+		 */
+		poll: function () {
+			$.get('/tweets', {
+				'since_id': this.sinceId
+			}, _.bind(this._onTweets, this));
+		},
+
+		/**
+		 * @function
+		 * @param {{
+			since_id: string,
+			tweets: Object
+		   }} response
+		 */
+		_onTweets: function (response) {
+			this._renderTweets(response.tweets);
+			this.sinceId = response.since_id;
+			this._schedulePoll();
+		},
+
+		/**
+		 * @function
+		 */
+		_schedulePoll: function () {
+			setTimeout(_.bind(this.poll, this), POLL_TIMEOUT);
+		},
+
+		/**
+		 * @function
+		 * @param {Array.<Object>} tweets
+		 */
+		_renderTweets: function (tweets) {
+			var row = _.last(this.rows) || this.addRow();
+
+			_.each(tweets, function (tweet) {
+				if (row.isFull()) {
+					row = this.addRow();
+				}
+				row.addTile(tweet);
+			}, this);
+		},
+
+		/**
+		 * @function
+		 */
+		_resizeRows: function () {
+			_.each(this.rows, function (row) {
+				row.resize();
+			});
+		}
+	};
+
+	var app = new App($('body'));
 });
