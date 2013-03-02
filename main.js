@@ -5,6 +5,7 @@ var TweetService = require('./lib/TweetService');
 var app = connect();
 app.use(connect.static('public'));
 app.use(function (req, res) {
+	// Expose '/tweets' endpoint
 	if (/^\/tweets/.test(req.url) && req.method === 'GET') {
 		getTweets(req, res);
 	} else {

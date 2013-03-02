@@ -1,11 +1,11 @@
 $(function () {
 	var POLL_TIMEOUT = 5000;
 	var MAX_ROWS = 5;
-	var MAX_TILES = 4;
+	var MAX_TILES_PER_ROW = 4;
 
 	/**
 	 * @constructor
-	 * @param {jQuery.Promise} ready
+	 * @param {$.Promise} ready
 	 */
 	var Row = function (ready) {
 		this.ready = ready;
@@ -21,8 +21,24 @@ $(function () {
 		addTile: function (tweet) {
 			var tile = new Tile();
 			this.tiles.push(tile);
-
 			this.ready.then(_.bind(this._renderTile, this, tile, tweet));
+		},
+
+		/**
+		 * @function
+		 * @return {boolean}
+		 */
+		isFull: function () {
+			return this.tiles.length === MAX_TILES_PER_ROW;
+		},
+
+		/**
+		 * @function
+		 */
+		resize: function () {
+			_.each(this.tiles, function (tile) {
+				tile.$el.height(tile.$el.width());
+			});
 		},
 
 		/**
@@ -36,23 +52,6 @@ $(function () {
 				$(this).fadeIn(500);
 				self.$el.append(tile.$el);
 				self.resize();
-			});
-		},
-
-		/**
-		 * @function
-		 * @return {boolean}
-		 */
-		isFull: function () {
-			return this.tiles.length === MAX_TILES;
-		},
-
-		/**
-		 * @function
-		 */
-		resize: function () {
-			_.each(this.tiles, function (tile) {
-				tile.$el.height(tile.$el.width());
 			});
 		}
 	};
@@ -68,26 +67,25 @@ $(function () {
 	/**
 	 * @constructor
 	 */
-	var App = function ($container) {
-		this.rows = [];
-		this.sinceId = -1;
+	var App = function () {
+		this._rows = [];
+		this._sinceId = -1;
 		this.$el = $('<div>').addClass('board');
 
 		$(window).on('resize', _.bind(this._resizeRows, this));
-		this.poll();
-		$container.append(this.$el);
+		this._poll();
 	};
 
 	App.prototype = {
 		/**
 		 * @function
-		 * @return {jQuery.Promise}
+		 * @return {$.Promise}
 		 */
-		trimOldRow: function () {
+		_trimOldRow: function () {
 			var def = $.Deferred();
 
-			if (this.rows.length === MAX_ROWS && _.last(this.rows).isFull()) {
-				var row = this.rows.shift();
+			if (this._rows.length === MAX_ROWS && _.last(this._rows).isFull()) {
+				var row = this._rows.shift();
 				row.$el.width(0);
 
 				setTimeout(function () {
@@ -105,14 +103,14 @@ $(function () {
 		 * @function
 		 * @return {Row}
 		 */
-		addRow: function () {
+		_addRow: function () {
 			// Get a 'ready' promise from trimming an old row, the new
 			// row is ready when the animation promise resolves
-			var ready = this.trimOldRow();
+			var ready = this._trimOldRow();
 			var row = new Row(ready);
 
 			this.$el.append(row.$el);
-			this.rows.push(row);
+			this._rows.push(row);
 
 			return row;
 		},
@@ -120,9 +118,9 @@ $(function () {
 		/**
 		 * @function
 		 */
-		poll: function () {
+		_poll: function () {
 			$.get('/tweets', {
-				'since_id': this.sinceId
+				'since_id': this._sinceId
 			}, _.bind(this._onTweets, this));
 		},
 
@@ -135,7 +133,7 @@ $(function () {
 		 */
 		_onTweets: function (response) {
 			this._renderTweets(response.tweets);
-			this.sinceId = response.since_id;
+			this._sinceId = response.since_id;
 			this._schedulePoll();
 		},
 
@@ -143,19 +141,19 @@ $(function () {
 		 * @function
 		 */
 		_schedulePoll: function () {
-			setTimeout(_.bind(this.poll, this), POLL_TIMEOUT);
+			setTimeout(_.bind(this._poll, this), POLL_TIMEOUT);
 		},
 
 		/**
 		 * @function
-		 * @param {Array.<Object>} tweets
+		 * @param {Array} tweets
 		 */
 		_renderTweets: function (tweets) {
-			var row = _.last(this.rows) || this.addRow();
+			var row = _.last(this._rows) || this._addRow();
 
 			_.each(tweets, function (tweet) {
 				if (row.isFull()) {
-					row = this.addRow();
+					row = this._addRow();
 				}
 				row.addTile(tweet);
 			}, this);
@@ -165,11 +163,12 @@ $(function () {
 		 * @function
 		 */
 		_resizeRows: function () {
-			_.each(this.rows, function (row) {
+			_.each(this._rows, function (row) {
 				row.resize();
 			});
 		}
 	};
 
-	var app = new App($('body'));
+	var app = new App();
+	app.$el.appendTo('body');
 });
