@@ -14,6 +14,7 @@
   "dependencies": {
     "q": "*",
     "bind-this": "*",
-    "connect": "2.x"
+    "connect": "2.x",
+    "cheerio": "0.x"
   }
 }

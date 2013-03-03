@@ -1,68 +1,9 @@
-$(function () {
-	var POLL_TIMEOUT = 5000;
-	var MAX_ROWS = 5;
-	var MAX_TILES_PER_ROW = 4;
-
-	/**
-	 * @constructor
-	 * @param {$.Promise} ready
-	 */
-	var Row = function (ready) {
-		this.ready = ready;
-		this.tiles = [];
-		this.$el = $('<div>').addClass('row');
-	};
-
-	Row.prototype = {
-		/**
-		 * @function
-		 * @param {Object} tweet
-		 */
-		addTile: function (tweet) {
-			var tile = new Tile();
-			this.tiles.push(tile);
-			this.ready.then(_.bind(this._renderTile, this, tile, tweet));
-		},
-
-		/**
-		 * @function
-		 * @return {boolean}
-		 */
-		isFull: function () {
-			return this.tiles.length === MAX_TILES_PER_ROW;
-		},
-
-		/**
-		 * @function
-		 */
-		resize: function () {
-			_.each(this.tiles, function (tile) {
-				tile.$el.height(tile.$el.width());
-			});
-		},
-
-		/**
-		 * @function
-		 */
-		_renderTile: function (tile, tweet) {
-			var image = tile.$el.find('img');
-			var self = this;
-
-			image.attr('src', tweet.spotify.image).load(function () {
-				$(this).fadeIn(500);
-				self.$el.append(tile.$el);
-				self.resize();
-			});
-		}
-	};
-
-	/**
-	 * @constructor
-	 */
-	var Tile = function () {
-		this.$el = $('<div>').addClass('tile');
-		this.$el.append($('<img>'));
-	};
+define([
+	'text!./template/app.html',
+	'RowView'
+], function (template, RowView) {
+	var POLL_TIMEOUT = 5000,
+		MAX_ROWS = 5;
 
 	/**
 	 * @constructor
@@ -70,9 +11,13 @@ $(function () {
 	var App = function () {
 		this._rows = [];
 		this._sinceId = -1;
-		this.$el = $('<div>').addClass('board');
+
+		this.$el = $('body').html(template);
+		this.$board = this.$el.find('.board');
+		this.$el.find('.title').delay(500).fadeIn(1000);
 
 		$(window).on('resize', _.bind(this._resizeRows, this));
+
 		this._poll();
 	};
 
@@ -107,9 +52,9 @@ $(function () {
 			// Get a 'ready' promise from trimming an old row, the new
 			// row is ready when the animation promise resolves
 			var ready = this._trimOldRow();
-			var row = new Row(ready);
+			var row = new RowView(ready);
 
-			this.$el.append(row.$el);
+			this.$board.append(row.$el);
 			this._rows.push(row);
 
 			return row;
@@ -169,6 +114,5 @@ $(function () {
 		}
 	};
 
-	var app = new App();
-	app.$el.appendTo('body');
+	return App;
 });
