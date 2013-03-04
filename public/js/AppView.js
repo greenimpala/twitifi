@@ -14,7 +14,6 @@ define([
 
 		this.$el = $('body').html(template);
 		this.$board = this.$el.find('.board');
-		this.$el.find('.title').delay(500).fadeIn(1000);
 
 		$(window).on('resize', _.bind(this._resizeRows, this));
 

@@ -19,7 +19,7 @@ define([
 		 * @param {Object} tweet
 		 */
 		addTile: function (tweet) {
-			var tile = new TileView();
+			var tile = new TileView(tweet);
 			this.tiles.push(tile);
 			this.ready.then(_.bind(this._renderTile, this, tile, tweet));
 		},
@@ -37,19 +37,21 @@ define([
 		 */
 		resize: function () {
 			_.each(this.tiles, function (tile) {
-				tile.$el.height(tile.$el.width());
+				var size = tile.$el.width();
+				tile.$el.height(size)
+					.find('.front, .back')
+					.height(size)
+					.width(size); // Remove to create 'scrunch' effecet when removing
 			});
 		},
 
 		/**
 		 * @function
 		 */
-		_renderTile: function (tile, tweet) {
-			var image = tile.$el.find('img');
+		_renderTile: function (tile) {
 			var self = this;
 
-			image.attr('src', tweet.spotify.image).load(function () {
-				$(this).fadeIn(500);
+			tile.render().then(function () {
 				self.$el.append(tile.$el);
 				self.resize();
 			});

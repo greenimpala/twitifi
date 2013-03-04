@@ -1,3 +1,18 @@
 <div class="tile">
-	<img src="">
+	<div class="flipper">
+		<div class="front">
+			<img src="">
+		</div>
+		<div class="back">
+			<div class="song">
+				<a href="<%= spotify.url %>" target="_blank">
+					<p class="song-title"><%= spotify.title %></p>
+				</a>
+				<p class="song-description">Tweeted by
+					<a href="http://twitter.com/<%= from_user %>" target="_blank">@<%= from_user %></a>.
+				</p>
+				<a class="play-now" href="<%= spotify.audio %>"></a>
+			</div>
+		</div>
+	</div>
 </div>
