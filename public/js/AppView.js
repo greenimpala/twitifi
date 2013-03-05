@@ -65,13 +65,12 @@ define([
 			var ready, row;
 
 			// If the board is full we get a 'ready' promise from
-			// trimming an older row, the new row is ready when the
-			// animation promise resolves
+			// trimming an older row and pass it to the new row
 			if (this._isFull()) {
-				ready = this._trimOldRow();
+				animationEnd = this._trimOldRow();
 			}
 
-			row = new RowView(ready);
+			row = new RowView(animationEnd);
 
 			this.$board.append(row.$el);
 			this._rows.push(row);
