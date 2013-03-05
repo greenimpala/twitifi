@@ -13,6 +13,10 @@ define([
 	Tile.prototype = {
 		template: _.template(template),
 
+		/**
+		 * @function
+		 * @return {$.Promise}
+		 */
 		render: function () {
 			var self = this;
 
