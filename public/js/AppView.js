@@ -61,7 +61,7 @@ define([
 		 * @return {Row}
 		 */
 		_addRow: function () {
-			var ready, row;
+			var animationEnd, row;
 
 			// If the board is full we get an animation end promise from
 			// trimming an older row and pass it to the new row
