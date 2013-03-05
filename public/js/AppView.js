@@ -3,7 +3,6 @@ define([
 	'RowView'
 ], function (template, RowView) {
 	var POLL_TIMEOUT = 5000,
-		MAX_ROWS = 5,
 		ROW_WIDTH = 230;
 
 	/**
