@@ -63,7 +63,7 @@ define([
 		_addRow: function () {
 			var ready, row;
 
-			// If the board is full we get a 'ready' promise from
+			// If the board is full we get an animation end promise from
 			// trimming an older row and pass it to the new row
 			if (this._isFull()) {
 				animationEnd = this._trimOldRow();
