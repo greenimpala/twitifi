@@ -151,7 +151,6 @@ body {
 .row {
 	height: 100%;
 	float: left;
-	width: 230px;
 	-webkit-transition-property: width;
 	-webkit-transition-duration: 1000ms;
 	-webkit-transition-timing-function: ease;

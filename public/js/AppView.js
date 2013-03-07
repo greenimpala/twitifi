@@ -3,13 +3,14 @@ define([
 	'RowView'
 ], function (template, RowView) {
 	var POLL_TIMEOUT = 5000,
-		ROW_WIDTH = 230;
+		MAX_ROW_WIDTH = 230;
 
 	/**
 	 * @constructor
 	 */
 	var App = function () {
 		this._maxRows = null;
+		this._rowWidth = null;
 		this._rows = [];
 		this._sinceId = -1;
 
@@ -24,10 +25,10 @@ define([
 			this.$el = $('body').html(template);
 			this.$board = this.$el.find('.board');
 
-			this._resize();
+			this.resize();
 			this._poll();
 
-			$(window).on('resize', _.bind(this._resize, this));
+			$(window).on('resize', _.bind(this.resize, this));
 		},
 
 		/**
@@ -69,7 +70,7 @@ define([
 				animationEnd = this._trimOldRow();
 			}
 
-			row = new RowView(animationEnd);
+			row = new RowView(animationEnd, this._rowWidth);
 
 			this.$board.append(row.$el);
 			this._rows.push(row);
@@ -127,20 +128,24 @@ define([
 		/**
 		 * @function
 		 */
-		_resize: function () {
-			var width, newMaxRow;
+		resize: function () {
+			var width, maxRows, rowWidth;
 
-			width = $(window).width();
-			newMaxRow = Math.floor(width / ROW_WIDTH);
+			windowWidth = $(window).width();
+			maxRows = Math.floor(windowWidth / MAX_ROW_WIDTH);
+			rowWidth = Math.floor(windowWidth / maxRows);
 
-			if (newMaxRow < this._rows.length) {
+			// Delete old rows if we are over the new limit
+			while (this._rows.length > maxRows) {
 				this._trimOldRow();
 			}
 
-			this._maxRows = Math.floor(width / ROW_WIDTH);
+			this._maxRows = maxRows;
+			this._rowWidth = rowWidth;
+
 			_.each(this._rows, function (row) {
-				row.resize();
-			});
+				row.resize(rowWidth);
+			}, this);
 		}
 	};
 

@@ -6,11 +6,13 @@ define([
 	/**
 	 * @constructor
 	 * @param {$.Promise=} ready
+	 * @param {string} width
 	 */
-	var Row = function (ready) {
+	var Row = function (ready, width) {
 		this.ready = ready || $.Deferred().resolve();
 		this.tiles = [];
-		this.$el = $('<div>').addClass('row');
+
+		this.$el = $('<div>').addClass('row').width(width);
 	};
 
 	Row.prototype = {
@@ -20,6 +22,7 @@ define([
 		 */
 		addTile: function (tweet) {
 			var tile = new TileView(tweet);
+
 			this.tiles.push(tile);
 			this.ready.then(_.bind(this._renderTile, this, tile, tweet));
 		},
@@ -35,13 +38,14 @@ define([
 		/**
 		 * @function
 		 */
-		resize: function () {
+		resize: function (width) {
+			width = width || this.$el.width();
+			this.$el.width(width);
+
 			_.each(this.tiles, function (tile) {
-				var size = tile.$el.width();
-				tile.$el.height(size)
-					.find('.front, .back')
-					.height(size)
-					.width(size); // Remove to create 'scrunch' effecet when removing
+				var elems = tile.$el.height(width).find('.front, .back');
+				elems.height(width);
+				elems.width(width);
 			});
 		},
 
