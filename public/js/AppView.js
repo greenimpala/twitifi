@@ -33,10 +33,9 @@ define([
 
 		/**
 		 * @function
-		 * @type {boolean} immediate
 		 * @return {$.Promise}
 		 */
-		_trimOldRow: function (immediate) {
+		_trimOldRow: function () {
 			var remove, row, def = $.Deferred();
 
 			row = this._rows.shift();
