@@ -52,12 +52,10 @@ define([
 		 * @function
 		 */
 		_renderTile: function (tile) {
-			var self = this;
-
-			tile.render().then(function () {
-				self.$el.append(tile.$el);
-				self.resize();
-			});
+			tile.render().then(_.bind(function () {
+				this.$el.append(tile.$el);
+				this.resize();
+			}, this));
 		}
 	};
 
