@@ -3,7 +3,7 @@ define([
 	'RowView'
 ], function (template, RowView) {
 	var POLL_TIMEOUT = 5000,
-		MAX_ROW_WIDTH = 230;
+		MAX_ROW_WIDTH = 215;
 
 	/**
 	 * @constructor
@@ -33,19 +33,21 @@ define([
 
 		/**
 		 * @function
+		 * @type {boolean} immediate
 		 * @return {$.Promise}
 		 */
-		_trimOldRow: function () {
-			var def = $.Deferred();
+		_trimOldRow: function (immediate) {
+			var remove, row, def = $.Deferred();
 
-			var row = this._rows.shift();
+			row = this._rows.shift();
 			row.$el.width(0);
 
-			setTimeout(function () {
+			remove = function () {
 				row.$el.remove();
 				def.resolve();
-			}, 1000);
+			};
 
+			setTimeout(remove, 1000);
 			return def.promise();
 		},
 
@@ -70,7 +72,7 @@ define([
 				animationEnd = this._trimOldRow();
 			}
 
-			row = new RowView(animationEnd, this._rowWidth);
+			row = new RowView(this._rowWidth, animationEnd);
 
 			this.$board.append(row.$el);
 			this._rows.push(row);
@@ -145,7 +147,7 @@ define([
 
 			_.each(this._rows, function (row) {
 				row.resize(rowWidth);
-			}, this);
+			});
 		}
 	};
 

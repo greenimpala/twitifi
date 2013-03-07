@@ -5,18 +5,22 @@ body {
 .tile {
   -webkit-perspective: 1000;
   -moz-perspective: 1000;
+  perspective: 1000;
 }
 
 .tile:hover .flipper {
 	-webkit-transform: rotateY(180deg);
 	-moz-transform: rotateY(180deg);
+	transform: rotateY(180deg);
 }
 
 .flipper {
-	-webkit-transition: 0.3s;
 	-moz-transition: 0.3s;
-	-webkit-transform-style: preserve-3d;
 	-moz-transform-style: preserve-3d;
+	-webkit-transition: 0.3s;
+	-webkit-transform-style: preserve-3d;
+	transition: 0.3s;
+	transform-style: preserve-3d;
 
 	position: relative;
 }
@@ -24,6 +28,7 @@ body {
 .front, .back {
 	-webkit-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -42,6 +47,7 @@ body {
 	color: white;
 	-webkit-transform: rotateY(180deg);
 	-moz-transform: rotateY(180deg);
+	transform: rotateY(180deg);
 	background: #eeeeee;
 }
 
@@ -157,6 +163,9 @@ body {
 	-moz-transition-property: width;
 	-moz-transition-duration: 1000ms;
 	-moz-transition-timing-function: ease;
+	transition-property: width;
+	transition-duration: 1000ms;
+	transition-timing-function: ease;
 	overflow: hidden;
 }
 

@@ -5,10 +5,10 @@ define([
 
 	/**
 	 * @constructor
-	 * @param {$.Promise=} ready
 	 * @param {string} width
+	 * @param {$.Promise=} ready
 	 */
-	var Row = function (ready, width) {
+	var Row = function (width, ready) {
 		this.ready = ready || $.Deferred().resolve();
 		this.tiles = [];
 

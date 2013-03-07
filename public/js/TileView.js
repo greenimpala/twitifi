@@ -11,6 +11,10 @@ define([
 	};
 
 	Tile.prototype = {
+		/**
+		 * @field
+		 * @type {function}
+		 */
 		template: _.template(template),
 
 		/**
