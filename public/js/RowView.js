@@ -45,7 +45,6 @@ define([
 			_.each(this.tiles, function (tile) {
 				var elems = tile.$el.height(width).find('.front, .back');
 				elems.height(width);
-				elems.width(width);
 			});
 		},
 
