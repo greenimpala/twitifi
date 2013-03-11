@@ -1,8 +1,10 @@
 var connect = require('connect');
 var url = require('url');
 var TweetService = require('./lib/TweetService');
-
 var app = connect();
+var lastRequest = +new Date();
+var IDLE_TIMEOUT = 30 * 1000;
+
 app.use(connect.static('public'));
 app.use(function (req, res) {
 	// Expose '/tweets' endpoint
@@ -17,6 +19,8 @@ app.use(function (req, res) {
 function getTweets (req, res) {
 	var sinceId, query;
 
+	lastRequest = +new Date();
+
 	try {
 		query = url.parse(req.url).query;
 		sinceId = parseInt(query.split('=')[1], 10);
@@ -29,5 +33,13 @@ function getTweets (req, res) {
 	res.writeHead(200, { 'Content-Type': 'application/json' });
 	res.end(TweetService.getTweetsSinceId(sinceId));
 }
+
+setInterval(function () {
+	var timeSinceLastRequest = +new Date() - lastRequest;
+
+	if (timeSinceLastRequest > IDLE_TIMEOUT && !TweetService.idle) {
+		TweetService.pause();
+	}
+}, IDLE_TIMEOUT);
 
 app.listen(8080);
