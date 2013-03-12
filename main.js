@@ -42,4 +42,4 @@ setInterval(function () {
 	}
 }, IDLE_TIMEOUT);
 
-app.listen(8080);
+app.listen(3000, '127.0.0.1');
