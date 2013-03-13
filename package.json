@@ -16,6 +16,7 @@
 		"q": "*",
 		"bind-this": "*",
 		"connect": "2.x",
-		"cheerio": "0.x"
+		"cheerio": "0.x",
+		"twit": "1.x"
 	}
 }
