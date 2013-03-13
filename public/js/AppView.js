@@ -85,7 +85,9 @@ define([
 		_poll: function () {
 			$.get('/tweets', {
 				'since_id': this._sinceId
-			}, _.bind(this._onTweets, this));
+			})
+			.done(_.bind(this._onTweets, this))
+			.fail(_.bind(this._schedulePoll, this));
 		},
 
 		/**
