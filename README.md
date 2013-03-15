@@ -2,7 +2,7 @@
 
 Realtime Spotify tweets.
 
-## Starting
+## Starting the server
 
 ```bash
 $ npm install -d && node main.js
