@@ -9,7 +9,7 @@ module.exports = function(grunt) {
               baseUrl: "public/js",
               paths: {
                 text: "vendor/text",
-                domReady: "vendor/require"
+                domReady: "vendor/domReady"
               },
               preserveLicenseComments: false
             }
