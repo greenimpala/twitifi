@@ -1,10 +1,3 @@
-require.config({
-	paths: {
-		'text': 'vendor/text',
-		'domReady': 'vendor/domReady'
-	}
-});
-
 require([
 	'AppView',
 	'domReady'

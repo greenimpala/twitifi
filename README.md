@@ -18,3 +18,11 @@ Use the `-c` argument to specify the relative file path of the `config.js` file.
 	"access_token_secret": "..."
 }
 ```
+
+## Building the client
+
+```js
+$ npm install -d && grunt
+```
+
+This will build `public/js/twitifi.min.js`.
