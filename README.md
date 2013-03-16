@@ -2,13 +2,13 @@
 
 Realtime Spotify tweets.
 
-## Starting the server
+## Installing and building
 
 ```bash
-$ npm install -d && node main.js
+$ npm install -d && grunt # Install dependencies and build client
 ```
 
-Use the `-c` argument to specify the relative file path of the `config.js` file. If no path is given then apps root directory is used. The config file contains Twitter API authentication data in the following format.
+A `config.js` must be created in the apps root directory before starting. This file should contain your Twitter API authentication data in the following format.
 
 ```json
 {
@@ -18,11 +18,8 @@ Use the `-c` argument to specify the relative file path of the `config.js` file.
 	"access_token_secret": "..."
 }
 ```
+## Running
 
-## Building the client
-
-```js
-$ npm install -d && grunt
+```bash
+$ npm start # Start on port 3000
 ```
-
-This will build `public/js/twitifi.min.js`.

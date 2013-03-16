@@ -24,6 +24,7 @@ define([
 		render: function () {
 			var self = this;
 
+			this.data.retweet_link = this._generateRetweetLink();
 			this.$el = $(this.template(this.data));
 			this.$image = this.$el.find('img');
 
@@ -33,6 +34,22 @@ define([
 			});
 
 			return this._loaded;
+		},
+
+		/**
+		 * @function
+		 * @return {string}
+		 */
+		_generateRetweetLink: function () {
+			var link = [
+				'https://twitter.com/intent/tweet?text=',
+				'Listening to ',
+				'\'' + this.data.spotify.title + '\'',
+				' via Twitifi - ',
+				'http://twitifi.bradshaw.io'
+			].join('');
+
+			return encodeURI(link);
 		}
 	};
 

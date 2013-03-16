@@ -52,13 +52,13 @@ body {
 }
 
 .song .song-title {
+	padding: 8px;
+	white-space: nowrap;
 	text-shadow: 1px 1px #F2F2F2;
 	color: #2D2D2D;
-	padding: 8px;
 	font-weight: bold;
 	margin-bottom: 6px;
 	line-height: 30px;
-	overflow-x: hidden;
 	border-top: 1px solid #eeeeee;
 	border-bottom: 1px solid #bbbbbb;
 
@@ -72,16 +72,45 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
 }
 
+.song .song-title p {
+	overflow: hidden;
+}
+
 .song .song-description {
 	color: black;
 	padding: 10px;
 }
 
+.song .song-actions {
+	width: 100%;
+	height: 30px;
+	color: black;
+	position: absolute;
+	bottom: 0;
+
+	background: #eeeeee; /* Old browsers */
+	background: -moz-linear-gradient(top,  #eeeeee 0%, #cccccc 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #eeeeee 0%,#cccccc 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #eeeeee 0%,#cccccc 100%); /* W3C */
+}
+
+.song .song-actions i {
+	cursor: pointer;
+	color: #2D2D2D;
+	text-shadow: 1px 1px #F2F2F2;
+	line-height: 30px;
+	margin-left: 10px;
+}
+
+
 .back a.play-now {
 	opacity: 0.8;
 	width: 85px;
 	height: 79px;
-	background-image: url("play.png");
+	background-image: url("../play.png");
 	background-repeat: no-repeat;
 	display:block;
 	margin: 0 auto;

@@ -6,12 +6,19 @@
 		<div class="back">
 			<div class="song">
 				<a href="<%= spotify.url %>" target="_blank">
-					<p class="song-title"><%= spotify.title %></p>
+					<div class="song-title">
+						<p><%= spotify.title %></p>
+					</div>
 				</a>
 				<p class="song-description">Tweeted by
 					<a href="http://twitter.com/<%= user.screen_name %>" target="_blank">@<%= user.screen_name %></a>.
 				</p>
 				<a class="play-now" href="<%= spotify.audio %>"></a>
+				<div class="song-actions">
+					<a href="<%= retweet_link %>" target="_blank">
+						<i class="icon-retweet icon-large" title="Retweet"></i>
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>
