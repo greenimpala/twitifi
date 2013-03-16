@@ -43,8 +43,8 @@ define([
 		_generateRetweetLink: function () {
 			var link = [
 				'https://twitter.com/intent/tweet?text=',
-				'Listening to ',
-				'\'' + this.data.spotify.title + '\'',
+				this.data.spotify.url,
+				' \'' + this.data.spotify.title + '\'',
 				' via Twitifi - ',
 				'http://twitifi.bradshaw.io'
 			].join('');
