@@ -11,8 +11,8 @@ define([
 	var App = function () {
 		this._maxRows = null;
 		this._rowWidth = null;
+		this._sinceId = null;
 		this._rows = [];
-		this._sinceId = -1;
 
 		this.initialize();
 	};

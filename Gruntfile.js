@@ -11,7 +11,8 @@ module.exports = function(grunt) {
                 text: "vendor/text",
                 domReady: "vendor/domReady"
               },
-              preserveLicenseComments: false
+              preserveLicenseComments: false,
+              stubModules: ['text']
             }
           }
         }
