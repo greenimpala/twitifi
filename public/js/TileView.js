@@ -44,7 +44,7 @@ define([
 			var link = [
 				'https://twitter.com/intent/tweet?text=',
 				this.data.spotify.url,
-				' \'' + this.data.spotify.title + '\'',
+				' - \'' + this.data.spotify.title + '\'',
 				' via Twitifi - ',
 				'http://twitifi.bradshaw.io'
 			].join('');
