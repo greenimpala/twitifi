@@ -2,6 +2,8 @@
 
 Realtime Spotify tweets.
 
+[![Dependency Status](https://gemnasium.com/st3redstripe/twitifi.png)](https://gemnasium.com/st3redstripe/twitifi)
+
 ## Installing and building
 
 ```bash
