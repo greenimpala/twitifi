@@ -5,7 +5,7 @@ Realtime Spotify tweets. **[View Live](http://twitifi.bradshaw.io)**.
 ## Installing and building
 
 ```bash
-$ npm install -d && grunt # Install dependencies and build client
+$ npm install -d && node -e "require('grunt').cli();" # Install dependencies and build client
 ```
 
 A `config.js` must be created in the apps root directory before starting. This file should contain your Twitter API authentication data in the following format.
@@ -21,5 +21,5 @@ A `config.js` must be created in the apps root directory before starting. This f
 ## Running
 
 ```bash
-$ npm start # Start on port 3000
+$ npm start
 ```
