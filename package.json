@@ -1,13 +1,13 @@
 {
   "name": "twitifi",
-  "version": "0.1.0",
-  "main": "server/start.js",
+  "version": "0.2.0",
+  "main": "main.js",
   "scripts": {
     "start": "node main.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:st3redstripe/spotifytweets.git"
+    "url": "git@github.com:st3redstripe/twitifi.git"
   },
   "author": "@st3redstripe",
   "license": "BSD",
