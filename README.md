@@ -8,7 +8,7 @@ Realtime Spotify tweets.
 $ npm install -d && node -e "require('grunt').cli();" # Install dependencies and build client
 ```
 
-A `config.js` must be created in the apps root directory before starting. This file should contain your Twitter API authentication data in the following format.
+A `config.js` must be created in the apps root directory before starting. This file should contain Twitter API authentication data in the following format.
 
 ```json
 {
