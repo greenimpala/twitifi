@@ -1,6 +1,6 @@
 # Twitifi
 
-Realtime Spotify tweets. **[View Live](http://twitifi.bradshaw.io)**.
+Realtime Spotify tweets.
 
 ## Installing and building
 
