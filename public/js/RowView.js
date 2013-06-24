@@ -1,7 +1,8 @@
 define([
-	'TileView'
-], function (TileView) {
-	var MAX_TILES_PER_ROW = 4;
+	'TileView',
+	'util'
+], function (TileView, util) {
+	var rowTiles = parseInt(util.getQueryParameter("rowTiles"), 10) || 4;
 
 	/**
 	 * @constructor
@@ -32,7 +33,7 @@ define([
 		 * @return {boolean}
 		 */
 		isFull: function () {
-			return this.tiles.length === MAX_TILES_PER_ROW;
+			return this.tiles.length === rowTiles;
 		},
 
 		/**
