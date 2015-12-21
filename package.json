@@ -16,9 +16,9 @@
     "bind-this": "*",
     "cheerio": "0.x",
     "connect": "2.x",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-requirejs": "^0.4.4",
     "q": "^2.0.3",
-    "twit": "^2.1.1",
-    "grunt": "~0.4.1",
-    "grunt-contrib-requirejs": "~0.4.0"
+    "twit": "^2.1.1"
   }
 }
