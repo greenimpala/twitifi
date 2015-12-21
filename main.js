@@ -2,7 +2,7 @@ var fs = require('fs');
 var http = require('http');
 var Server = require('./lib/Server');
 var TweetService = require('./lib/TweetService');
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 http.globalAgent.maxSockets = 100000;
 
