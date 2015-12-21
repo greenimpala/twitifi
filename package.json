@@ -4,7 +4,7 @@
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
-    "postinstall": "grunt"
+    "postinstall": "./node_modules/.bin/grunt"
   },
   "repository": {
     "type": "git",
@@ -17,9 +17,7 @@
     "cheerio": "0.x",
     "connect": "2.x",
     "q": "^2.0.3",
-    "twit": "^2.1.1"
-  },
-  "devDependencies": {
+    "twit": "^2.1.1",
     "grunt": "~0.4.1",
     "grunt-contrib-requirejs": "~0.4.0"
   }
