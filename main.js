@@ -14,5 +14,5 @@ var tweetService = new TweetService({
 });
 var app = new Server(tweetService);
 
-app.listen(PORT, '127.0.0.1');
+app.listen(PORT);
 console.info('twitifi server started on port ' + PORT + '.');
